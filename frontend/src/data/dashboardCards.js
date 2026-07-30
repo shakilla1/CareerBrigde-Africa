@@ -2,22 +2,27 @@ const dashboardCards = [
   {
     id: 1,
     title: "Applications",
-    value: 12,
+    value: 1,
   },
   {
     id: 2,
     title: "Saved Opportunities",
-    value: 8,
+    value: 2,
   },
   {
     id: 3,
     title: "Available Opportunities",
-    value: 36,
+    value: 3,
   },
   {
     id: 4,
     title: "Mentorship Resources",
-    value: 18,
+    value: 3,
+  },
+  {
+    id: 4,
+    title: "Profile Completion",
+    value: "80%",
   },
 ];
 
