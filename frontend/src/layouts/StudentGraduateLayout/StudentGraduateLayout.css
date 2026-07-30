@@ -1,0 +1,17 @@
+.student-layout {
+    display: flex;
+    min-height: 100vh;
+    background: #f5f7fb;
+}
+
+.student-layout__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 240px;
+}
+
+.student-layout__main {
+    flex: 1;
+    padding: 30px;
+}

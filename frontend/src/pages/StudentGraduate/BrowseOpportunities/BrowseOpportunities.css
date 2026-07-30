@@ -1,0 +1,142 @@
+.browse-opportunities__header{
+    margin-bottom:30px;
+}
+
+.browse-opportunities__header h1{
+    color:#12376b;
+    margin-bottom:10px;
+}
+
+.browse-opportunities__header p{
+    color:#6b7280;
+}
+
+.browse-opportunities__grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+    gap:24px;
+}
+
+.browse-message{
+    margin:20px 0;
+    padding:12px;
+    background:#e8f5e9;
+    color:#2e7d32;
+    border-radius:8px;
+    font-weight:500;
+}
+
+.opportunity-actions{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+
+.opportunity-actions button{
+    padding:10px 16px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.opportunity-actions button:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+.search-container{
+
+display:flex;
+gap:15px;
+margin-top:30px;
+
+}
+
+
+.search-container input{
+
+padding:12px;
+border:1px solid #ddd;
+border-radius:8px;
+flex:1;
+
+}
+
+
+.search-container button{
+
+padding:12px 25px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+
+}
+
+
+@media(max-width:700px){
+
+.search-container{
+
+flex-direction:column;
+
+}
+
+}
+
+.opportunity-card{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.opportunity-card h2{
+    color:#12376b;
+    font-size:1.1rem;
+}
+
+.opportunity-card p{
+    color:#6b7280;
+    font-size:0.9rem;
+}
+
+.opportunity-card__error{
+    color:#b3261e;
+    font-size:0.85rem;
+}
+
+.opportunity-card__actions{
+    display:flex;
+    gap:10px;
+    margin-top:10px;
+}
+
+.opportunity-card__save,
+.opportunity-card__apply{
+    flex:1;
+    padding:10px;
+    border-radius:8px;
+    border:none;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.opportunity-card__save{
+    background:#f3f4f6;
+    color:#12376b;
+}
+
+.opportunity-card__apply{
+    background:#12376b;
+    color:#fff;
+}
+
+.opportunity-card__save:disabled,
+.opportunity-card__apply:disabled{
+    opacity:0.6;
+    cursor:not-allowed;
+}

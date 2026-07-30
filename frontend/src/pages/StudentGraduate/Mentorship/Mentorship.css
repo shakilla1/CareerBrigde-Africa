@@ -1,0 +1,27 @@
+.resource-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+    gap:24px;
+}
+
+.resource-card{
+    background:#fff;
+    padding:24px;
+    border-radius:12px;
+}
+
+.resource-card h3{
+    color:#12376b;
+    margin-bottom:10px;
+}
+
+.resource-card p{
+    margin-bottom:20px;
+    color:#6b7280;
+}
+
+.resource-card a{
+    text-decoration:none;
+    color:#12376b;
+    font-weight:600;
+}

@@ -1,0 +1,12 @@
+.opportunities-table{
+    width:100%;
+    background:#ffffff;
+    border-collapse:collapse;
+}
+
+.opportunities-table th,
+.opportunities-table td{
+    padding:16px;
+    border-bottom:1px solid #e5e7eb;
+    text-align:left;
+}

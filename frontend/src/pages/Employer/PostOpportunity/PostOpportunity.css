@@ -1,0 +1,46 @@
+.opportunity-form{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    max-width:700px;
+}
+
+.opportunity-form input,
+.opportunity-form select,
+.opportunity-form textarea{
+    padding:14px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+}
+
+.opportunity-form textarea{
+    height:180px;
+    resize:none;
+}
+
+.opportunity-form button{
+    width:220px;
+    padding:14px;
+    background:#12376b;
+    color:#ffffff;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.opportunity-form__row{
+    display:flex;
+    gap:14px;
+}
+
+.opportunity-form__row input{
+    flex:1;
+}
+
+.form-error{
+    background:#fdecea;
+    color:#b3261e;
+    padding:10px 14px;
+    border-radius:8px;
+    font-size:14px;
+}

@@ -1,0 +1,24 @@
+.page-header{
+    margin-bottom:30px;
+}
+
+.page-header h1{
+    color:#12376b;
+}
+
+.page-header p{
+    color:#6b7280;
+}
+
+.applications-table{
+    width:100%;
+    border-collapse:collapse;
+    background:#fff;
+}
+
+.applications-table th,
+.applications-table td{
+    padding:16px;
+    border-bottom:1px solid #e5e7eb;
+    text-align:left;
+}

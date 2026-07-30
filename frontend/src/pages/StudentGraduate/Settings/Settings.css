@@ -1,0 +1,15 @@
+.settings-card{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    max-width:500px;
+}
+
+.settings-card button{
+    padding:16px;
+    border:none;
+    background:#12376b;
+    color:#fff;
+    border-radius:8px;
+    cursor:pointer;
+}

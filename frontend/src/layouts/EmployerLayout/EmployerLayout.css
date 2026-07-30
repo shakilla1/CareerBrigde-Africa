@@ -1,0 +1,14 @@
+.employer-layout{
+    display:flex;
+    min-height:100vh;
+    background:#f5f7fb;
+}
+
+.employer-layout__content{
+    flex:1;
+    margin-left:240px;
+}
+
+.employer-layout__main{
+    padding:30px;
+}

@@ -1,0 +1,29 @@
+.dashboard{
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+}
+
+.dashboard__header h1{
+    font-size:2rem;
+    color:var(--primary-color);
+    margin-bottom:8px;
+}
+
+.dashboard__header p{
+    color:var(--text-secondary);
+}
+
+.dashboard__cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+.dashboard__section{
+    margin-top:40px;
+}
+
+.dashboard__section h2{
+    margin-bottom:20px;
+    color:var(--primary-color);
+}

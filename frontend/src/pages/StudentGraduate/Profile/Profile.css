@@ -1,0 +1,43 @@
+.profile-form{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    max-width:700px;
+}
+
+.profile-form input,
+.profile-form textarea{
+    padding:14px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+}
+
+.profile-form textarea{
+    height:150px;
+    resize:none;
+}
+
+.profile-form button{
+    width:180px;
+    padding:14px;
+    border:none;
+    background:#12376b;
+    color:#fff;
+    border-radius:8px;
+    cursor:pointer;
+}
+.form-error{
+    background:#fdecea;
+    color:#b3261e;
+    padding:10px 14px;
+    border-radius:8px;
+    font-size:14px;
+}
+
+.form-success{
+    background:#e6f4ea;
+    color:#1e7e34;
+    padding:10px 14px;
+    border-radius:8px;
+    font-size:14px;
+}
