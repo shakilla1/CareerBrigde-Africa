@@ -6,8 +6,8 @@ from sqlalchemy import text
 from config import config
 from app.extensions import db, jwt, cors, migrate
 from app.models import *
-from app.cli import create_admin
-from app.seed import seed_data
+from app.cli import create_admin, list_users, reset_password, promote_to_admin
+from app.seed import seed_data, run_seed
 
 
 def create_app(env="development"):
@@ -41,6 +41,9 @@ def create_app(env="development"):
 
     migrate.init_app(app, db)
     app.cli.add_command(create_admin)
+    app.cli.add_command(list_users)
+    app.cli.add_command(reset_password)
+    app.cli.add_command(promote_to_admin)
     app.cli.add_command(seed_data)
 
     register_blueprints(app)
@@ -50,7 +53,24 @@ def create_app(env="development"):
     if os.environ.get("AUTO_CREATE_TABLES", "1") == "1":
         create_tables_if_missing(app)
 
+    # Lets you seed a hosted database without shell access: set
+    # SEED_ON_STARTUP=1 in the host's environment variables, redeploy once,
+    # then remove the variable again. Seeding is idempotent, so even if the
+    # variable is left in place nothing gets duplicated.
+    if os.environ.get("SEED_ON_STARTUP", "0") == "1":
+        seed_on_startup(app)
+
     return app
+
+
+def seed_on_startup(app):
+    with app.app_context():
+        try:
+            run_seed(echo=app.logger.info)
+            app.logger.info("Startup seeding finished.")
+        except Exception as error:  # noqa: BLE001 - must not stop the app booting
+            db.session.rollback()
+            app.logger.error("Startup seeding failed: %s", error)
 
 
 def create_tables_if_missing(app):

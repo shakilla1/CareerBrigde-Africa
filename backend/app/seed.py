@@ -253,14 +253,15 @@ def get_or_create_user(full_name, email, role, password):
     return user, True
 
 
-@click.command("seed-data")
-@click.option(
-    "--password",
-    default=None,
-    help="Password for every seeded account. Defaults to SEED_PASSWORD or Career2026.",
-)
-@with_appcontext
-def seed_data(password):
+def run_seed(password=None, echo=None):
+    """Insert the demo data. Safe to call more than once.
+
+    Shared by the "seed-data" command and by the optional seed on startup,
+    so there is only one copy of this logic.
+    """
+    if echo is None:
+        echo = click.echo
+
     password = password or os.environ.get("SEED_PASSWORD") or DEFAULT_PASSWORD
 
     db.create_all()
@@ -269,7 +270,7 @@ def seed_data(password):
     admin, created = get_or_create_user(
         ADMIN["full_name"], ADMIN["email"], "admin", password
     )
-    click.echo(
+    echo(
         f"{'Created' if created else 'Found'} admin {ADMIN['email']}"
     )
 
@@ -296,7 +297,7 @@ def seed_data(password):
             db.session.flush()
 
         profiles_by_company[employer["company_name"]] = profile
-        click.echo(
+        echo(
             f"{'Created' if created else 'Found'} employer {employer['email']}"
         )
 
@@ -334,7 +335,7 @@ def seed_data(password):
         db.session.flush()
 
         opportunities_by_title[item["title"]] = posting
-        click.echo(f"Created opportunity: {item['title']}")
+        echo(f"Created opportunity: {item['title']}")
 
     # --- students ------------------------------------------------------
     for student in STUDENTS:
@@ -362,7 +363,7 @@ def seed_data(password):
                 end_year=education["end_year"],
             ))
 
-        click.echo(
+        echo(
             f"{'Created' if created else 'Found'} student {student['email']}"
         )
 
@@ -389,7 +390,7 @@ def seed_data(password):
                 ),
                 status="submitted",
             ))
-            click.echo(f"  applied to {title}")
+            echo(f"  applied to {title}")
 
     # --- mentorship resources -----------------------------------------
     for resource in MENTORSHIP_RESOURCES:
@@ -407,7 +408,7 @@ def seed_data(password):
             content=resource["link"],
             published_by=admin.id,
         ))
-        click.echo(f"Created resource: {resource['title']}")
+        echo(f"Created resource: {resource['title']}")
 
     # --- reported items ------------------------------------------------
     reporter = User.query.filter_by(role="student").first()
@@ -427,15 +428,27 @@ def seed_data(password):
                 target_id=index + 1,
                 status="new",
             ))
-            click.echo(f"Created report: {report['category']}")
+            echo(f"Created report: {report['category']}")
 
     db.session.commit()
 
-    click.echo("")
-    click.echo("Seed data complete. Demo accounts:")
-    click.echo(f"  admin     {ADMIN['email']}")
+    echo("")
+    echo("Seed data complete. Demo accounts:")
+    echo(f"  admin     {ADMIN['email']}")
     for employer in EMPLOYERS:
-        click.echo(f"  employer  {employer['email']}")
+        echo(f"  employer  {employer['email']}")
     for student in STUDENTS:
-        click.echo(f"  student   {student['email']}")
-    click.echo(f"  password  {password}")
+        echo(f"  student   {student['email']}")
+    echo(f"  password  {password}")
+
+
+@click.command("seed-data")
+@click.option(
+    "--password",
+    default=None,
+    help="Password for every seeded account. Defaults to SEED_PASSWORD or Career2026.",
+)
+@with_appcontext
+def seed_data(password):
+    """Load the demo data into the database."""
+    run_seed(password)
