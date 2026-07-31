@@ -19,6 +19,7 @@ class MentorshipResource(db.Model):
             "title": self.title,
             "category": self.category,
             "content": self.content,
+            "link": self.content,
             "resource_type": self.resource_type,
             "created_at": self.created_at.isoformat(),
         }

@@ -19,7 +19,7 @@ function Navbar() {
             Mentorship
           </Link>
 
-          <Link to="/employers" className="navbar__link">
+          <Link to="/register" className="navbar__link">
             For Employers
           </Link>
         </nav>

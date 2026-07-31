@@ -14,6 +14,7 @@ import Login from "../pages/Public/Login/Login";
 import Register from "../pages/Public/Register/Register";
 import About from "../pages/Public/About/About";
 import Contact from "../pages/Public/Contact/Contact";
+import PublicMentorship from "../pages/StudentGraduate/Mentorship/Mentorship";
 
 import Dashboard from "../pages/StudentGraduate/Dashboard/Dashboard";
 import BrowseOpportunities from "../pages/StudentGraduate/BrowseOpportunities/BrowseOpportunities";
@@ -48,6 +49,7 @@ function AppRoutes() {
           <Route path="/register" element={<Register />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/mentorship" element={<PublicMentorship />} />
         </Route>
 
         <Route element={<ProtectedRoute allowedRoles={["student"]} />}>

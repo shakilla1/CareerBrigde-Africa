@@ -3,6 +3,7 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.extensions import db
 from app.models.user import User
+from app.utils.current_user import current_user
 from app.models.opportunity import Opportunity
 from app.models.saved_opportunity import SavedOpportunity
 from app.models.application import Application
@@ -12,8 +13,7 @@ opportunities_bp = Blueprint("opportunities", __name__)
 
 
 def get_current_user():
-    identity = get_jwt_identity()
-    return User.query.get(identity) if identity else None
+    return current_user()
 
 
 @opportunities_bp.route("", methods=["GET"])

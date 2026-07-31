@@ -5,6 +5,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from werkzeug.utils import secure_filename
 from app.extensions import db
 from app.models.user import User
+from app.utils.current_user import current_user
 from app.models.student_profile import StudentProfile, EducationEntry
 from app.models.employer_profile import EmployerProfile
 
@@ -18,8 +19,7 @@ def allowed_file(filename, allowed_extensions):
 
 
 def get_current_user():
-    identity = get_jwt_identity()
-    return User.query.get(identity)
+    return current_user()
 
 
 @profile_bp.route("", methods=["GET"])
@@ -206,3 +206,74 @@ def delete_resume():
     db.session.commit()
 
     return jsonify({"message": "resume deleted"}), 200
+
+@profile_bp.route("/dashboard", methods=["GET"])
+@jwt_required()
+def dashboard_summary():
+    """Real counters for the dashboard cards, per role."""
+    from app.models.opportunity import Opportunity
+    from app.models.application import Application
+    from app.models.saved_opportunity import SavedOpportunity
+    from app.models.mentorship_resource import MentorshipResource
+
+    user = get_current_user()
+
+    if not user:
+        return jsonify({"error": "user not found"}), 404
+
+    if user.role == "student":
+        profile = user.student_profile
+
+        applications = 0
+        saved = 0
+        profile_strength = 0
+
+        if profile:
+            applications = Application.query.filter_by(student_id=profile.id).count()
+            saved = SavedOpportunity.query.filter_by(student_id=profile.id).count()
+            profile_strength = profile.profile_strength()
+
+        return jsonify({
+            "role": "student",
+            "applications": applications,
+            "saved_opportunities": saved,
+            "available_opportunities": Opportunity.query.filter_by(status="open").count(),
+            "mentorship_resources": MentorshipResource.query.count(),
+            "profile_completion": profile_strength,
+        }), 200
+
+    if user.role == "employer":
+        profile = user.employer_profile
+
+        if not profile:
+            return jsonify({"error": "employer profile not found"}), 404
+
+        opportunity_ids = [
+            row.id for row in Opportunity.query.filter_by(employer_id=profile.id).all()
+        ]
+
+        applications_received = 0
+        shortlisted = 0
+
+        if opportunity_ids:
+            applications_received = Application.query.filter(
+                Application.opportunity_id.in_(opportunity_ids)
+            ).count()
+
+            shortlisted = Application.query.filter(
+                Application.opportunity_id.in_(opportunity_ids),
+                Application.status.in_(("interviewing", "offered")),
+            ).count()
+
+        return jsonify({
+            "role": "employer",
+            "posted_opportunities": len(opportunity_ids),
+            "open_positions": Opportunity.query.filter_by(
+                employer_id=profile.id, status="open"
+            ).count(),
+            "applications_received": applications_received,
+            "shortlisted": shortlisted,
+            "verification_status": profile.verification_status,
+        }), 200
+
+    return jsonify({"role": user.role}), 200

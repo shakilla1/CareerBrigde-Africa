@@ -1,6 +1,10 @@
+import { useState } from "react";
+import ChangePasswordForm from "../../../components/common/ChangePasswordForm/ChangePasswordForm";
 import "../../../styles/admin.css";
 
 function Settings() {
+  const [notice, setNotice] = useState("");
+
   return (
     <section className="admin-settings">
 
@@ -11,11 +15,17 @@ function Settings() {
 
       <div className="settings-card">
 
-        <button>Change Password</button>
+        <ChangePasswordForm />
 
-        <button>Manage Notifications</button>
+        <button onClick={() => setNotice("Notification settings are planned for the next release.")}>
+          Manage Notifications
+        </button>
 
-        <button>System Preferences</button>
+        <button onClick={() => setNotice("System preferences are planned for the next release.")}>
+          System Preferences
+        </button>
+
+        {notice && <p className="form-success">{notice}</p>}
 
       </div>
 

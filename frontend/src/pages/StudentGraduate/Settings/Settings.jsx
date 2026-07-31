@@ -1,6 +1,10 @@
+import { useState } from "react";
+import ChangePasswordForm from "../../../components/common/ChangePasswordForm/ChangePasswordForm";
 import "./Settings.css";
 
 function Settings() {
+  const [notice, setNotice] = useState("");
+
   return (
     <section className="settings">
 
@@ -11,11 +15,17 @@ function Settings() {
 
       <div className="settings-card">
 
-        <button>Change Password</button>
+        <ChangePasswordForm />
 
-        <button>Notification Preferences</button>
+        <button onClick={() => setNotice("Notification preferences are planned for the next release.")}>
+          Notification Preferences
+        </button>
 
-        <button>Delete Account</button>
+        <button onClick={() => setNotice("To close your account, please contact an administrator.")}>
+          Delete Account
+        </button>
+
+        {notice && <p className="form-success">{notice}</p>}
 
       </div>
 

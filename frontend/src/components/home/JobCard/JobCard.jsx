@@ -1,7 +1,7 @@
 import "./JobCard.css";
 import { FiMapPin, FiClock } from "react-icons/fi";
 
-function JobCard({ job }) {
+function JobCard({ job, onApply }) {
   return (
     <div className="job-card">
 
@@ -29,7 +29,7 @@ function JobCard({ job }) {
 
       </div>
 
-      <button className="job-card__button">
+      <button className="job-card__button" onClick={onApply}>
         Apply Now
       </button>
 

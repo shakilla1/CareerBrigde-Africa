@@ -1,31 +1,36 @@
+import { useEffect, useState } from "react";
 import "./Dashboard.css";
 
 import DashboardCard from "../../../components/dashboard/DashboardCard/DashboardCard";
+import { getPlatformStats } from "../../../services/adminService";
 
 function Dashboard() {
+  const [dashboardCards, setDashboardCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const dashboardCards = [
-    {
-      id: 1,
-      title: "Users",
-      value: "620",
-    },
-    {
-      id: 2,
-      title: "Pending Employer Verifications",
-      value: "14",
-    },
-    {
-      id: 3,
-      title: "Mentorship Resources",
-      value: "45",
-    },
-    {
-      id: 4,
-      title: "Reported Items",
-      value: "9",
-    },
-  ];
+  useEffect(() => {
+    const loadStats = async () => {
+      try {
+        const stats = await getPlatformStats();
+
+        setDashboardCards([
+          { id: 1, title: "Users", value: stats.total_users },
+          { id: 2, title: "Pending Employer Verifications", value: stats.pending_verifications },
+          { id: 3, title: "Mentorship Resources", value: stats.mentorship_resources },
+          { id: 4, title: "Reported Items", value: stats.open_reports },
+          { id: 5, title: "Open Opportunities", value: stats.open_opportunities },
+          { id: 6, title: "Applications", value: stats.total_applications },
+        ]);
+      } catch (err) {
+        setError("Could not load platform statistics.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadStats();
+  }, []);
 
   return (
     <section className="dashboard">
@@ -35,15 +40,21 @@ function Dashboard() {
         <p>Overview of platform activities.</p>
       </div>
 
+      {error && <p className="form-error">{error}</p>}
+
       <div className="dashboard__cards">
 
-        {dashboardCards.map((card) => (
-          <DashboardCard
-            key={card.id}
-            title={card.title}
-            value={card.value}
-          />
-        ))}
+        {loading ? (
+          <p>Loading statistics...</p>
+        ) : (
+          dashboardCards.map((card) => (
+            <DashboardCard
+              key={card.id}
+              title={card.title}
+              value={card.value}
+            />
+          ))
+        )}
 
       </div>
 

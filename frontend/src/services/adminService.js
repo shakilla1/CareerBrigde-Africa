@@ -24,3 +24,23 @@ export const updateUserStatus = async (id, status) => {
   const response = await api.put(`/admin/users/${id}/status`, { status });
   return response.data;
 };
+
+export const getPlatformStats = async () => {
+  const response = await api.get("/admin/stats");
+  return response.data;
+};
+
+export const getReports = async () => {
+  const response = await api.get("/admin/reports");
+  return response.data;
+};
+
+export const resolveReport = async (id) => {
+  const response = await api.put(`/admin/reports/${id}/resolve`);
+  return response.data;
+};
+
+export const dismissReport = async (id) => {
+  const response = await api.put(`/admin/reports/${id}/dismiss`);
+  return response.data;
+};

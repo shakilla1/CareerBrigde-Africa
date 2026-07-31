@@ -10,6 +10,7 @@ from app.extensions import db
 from app.models.user import User
 from app.models.student_profile import StudentProfile
 from app.models.employer_profile import EmployerProfile
+from app.utils.current_user import current_user
 from app.utils.validators import (
     validate_email,
     validate_password,
@@ -158,9 +159,7 @@ def login():
 @auth_bp.route("/refresh", methods=["POST"])
 @jwt_required(refresh=True)
 def refresh():
-    identity = get_jwt_identity()
-
-    user = db.session.get(User, int(identity))
+    user = current_user()
 
     if not user:
         return jsonify({
@@ -183,6 +182,49 @@ def logout():
     return jsonify({
         "message": "Logged out successfully."
     }), 200
+
+
+@auth_bp.route("/me", methods=["GET"])
+@jwt_required()
+def me():
+    user = current_user()
+
+    if not user:
+        return jsonify({"error": "User not found."}), 404
+
+    return jsonify(user.to_dict()), 200
+
+
+@auth_bp.route("/change-password", methods=["PUT"])
+@jwt_required()
+def change_password():
+    user = current_user()
+
+    if not user:
+        return jsonify({"error": "User not found."}), 404
+
+    data = request.get_json() or {}
+
+    current = data.get("current_password", "")
+    new_password = data.get("new_password", "")
+
+    if not current or not new_password:
+        return jsonify({
+            "error": "current_password and new_password are required."
+        }), 400
+
+    if not user.check_password(current):
+        return jsonify({"error": "Your current password is incorrect."}), 401
+
+    valid, message = validate_password(new_password)
+
+    if not valid:
+        return jsonify({"error": message}), 400
+
+    user.set_password(new_password)
+    db.session.commit()
+
+    return jsonify({"message": "Password updated successfully."}), 200
 
 
 @auth_bp.route("/forgot-password", methods=["POST"])

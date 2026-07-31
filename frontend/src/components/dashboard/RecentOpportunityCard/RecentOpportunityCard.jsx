@@ -1,6 +1,6 @@
 import "./RecentOpportunityCard.css";
 
-function RecentOpportunityCard({ opportunity }) {
+function RecentOpportunityCard({ opportunity, onView }) {
   return (
     <div className="recent-opportunity-card">
 
@@ -14,7 +14,7 @@ function RecentOpportunityCard({ opportunity }) {
         </span>
       </div>
 
-      <button>
+      <button onClick={onView}>
         View
       </button>
 

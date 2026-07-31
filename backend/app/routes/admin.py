@@ -3,7 +3,12 @@ from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.extensions import db
 from app.models.user import User
+from app.utils.current_user import current_user
 from app.models.employer_profile import EmployerProfile
+from app.models.opportunity import Opportunity
+from app.models.application import Application
+from app.models.mentorship_resource import MentorshipResource
+from app.models.report import Report
 
 admin_bp = Blueprint("admin", __name__)
 
@@ -11,8 +16,7 @@ VALID_STATUSES = ("active", "suspended")
 
 
 def get_current_admin():
-    identity = get_jwt_identity()
-    user = User.query.get(identity)
+    user = current_user()
     if not user or user.role != "admin":
         return None
     return user
@@ -107,3 +111,68 @@ def update_user_status(user_id):
     db.session.commit()
 
     return jsonify(user.to_dict()), 200
+
+@admin_bp.route("/stats", methods=["GET"])
+@jwt_required()
+def platform_stats():
+    if not get_current_admin():
+        return jsonify({"error": "admin access required"}), 403
+
+    return jsonify({
+        "total_users": User.query.count(),
+        "students": User.query.filter_by(role="student").count(),
+        "employers": User.query.filter_by(role="employer").count(),
+        "pending_verifications": EmployerProfile.query.filter_by(
+            verification_status="pending"
+        ).count(),
+        "open_opportunities": Opportunity.query.filter_by(status="open").count(),
+        "total_opportunities": Opportunity.query.count(),
+        "total_applications": Application.query.count(),
+        "mentorship_resources": MentorshipResource.query.count(),
+        "open_reports": Report.query.filter_by(status="new").count(),
+    }), 200
+
+
+@admin_bp.route("/reports", methods=["GET"])
+@jwt_required()
+def list_reports():
+    if not get_current_admin():
+        return jsonify({"error": "admin access required"}), 403
+
+    reports = Report.query.order_by(Report.flagged_at.desc()).all()
+
+    return jsonify([report.to_dict() for report in reports]), 200
+
+
+@admin_bp.route("/reports/<int:report_id>/resolve", methods=["PUT"])
+@jwt_required()
+def resolve_report(report_id):
+    if not get_current_admin():
+        return jsonify({"error": "admin access required"}), 403
+
+    report = db.session.get(Report, report_id)
+
+    if not report:
+        return jsonify({"error": "report not found"}), 404
+
+    report.status = "resolved"
+    db.session.commit()
+
+    return jsonify(report.to_dict()), 200
+
+
+@admin_bp.route("/reports/<int:report_id>/dismiss", methods=["PUT"])
+@jwt_required()
+def dismiss_report(report_id):
+    if not get_current_admin():
+        return jsonify({"error": "admin access required"}), 403
+
+    report = db.session.get(Report, report_id)
+
+    if not report:
+        return jsonify({"error": "report not found"}), 404
+
+    report.status = "dismissed"
+    db.session.commit()
+
+    return jsonify(report.to_dict()), 200

@@ -51,31 +51,9 @@ function BrowseOpportunities() {
 
   useEffect(() => {
 
-    const fetchOpportunities = async () => {
-
-      try {
-
-        const data = await getOpportunities();
-
-        setOpportunities(data.opportunities || data);
-
-      } catch (error) {
-
-        console.error(
-          "Failed to fetch opportunities:",
-          error
-        );
-
-      } finally {
-
-        setLoading(false);
-
-      }
-
-    };
-
     fetchOpportunities();
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSave = async (id) => {

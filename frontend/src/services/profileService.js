@@ -9,3 +9,8 @@ export const updateProfile = async (data) => {
   const response = await api.put("/profile", data);
   return response.data;
 };
+
+export const getDashboardSummary = async () => {
+  const response = await api.get("/profile/dashboard");
+  return response.data;
+};

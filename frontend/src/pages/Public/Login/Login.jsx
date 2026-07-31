@@ -14,6 +14,8 @@ function Login() {
 
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
     setFormData({
@@ -26,6 +28,8 @@ function Login() {
     event.preventDefault();
 
     setError("");
+    setNotice("");
+    setLoading(true);
 
     try {
       const data = await loginUser(formData);
@@ -38,11 +42,19 @@ function Login() {
         navigate("/employer/dashboard");
       } else if (data.user.role === "admin") {
         navigate("/admin/dashboard");
+      } else {
+        setError("This account has an unrecognised role.");
       }
     } catch (error) {
-      setError(
-        error.response?.data?.error || "Login failed."
-      );
+      if (error.response) {
+        setError(error.response.data?.error || "Login failed.");
+      } else {
+        setError(
+          "Could not reach the server. It may still be starting up, please wait a moment and try again."
+        );
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -61,6 +73,12 @@ function Login() {
         {error && (
           <p className="login-error">
             {error}
+          </p>
+        )}
+
+        {notice && (
+          <p className="login-error">
+            {notice}
           </p>
         )}
 
@@ -110,14 +128,22 @@ function Login() {
               Remember me
             </label>
 
-            <Link to="/forgot-password">
+            <a
+              href="#reset"
+              onClick={(event) => {
+                event.preventDefault();
+                setNotice(
+                  "Password reset is not available yet. Please contact an administrator."
+                );
+              }}
+            >
               Forgot password?
-            </Link>
+            </a>
 
           </div>
 
-          <button type="submit">
-            Login
+          <button type="submit" disabled={loading}>
+            {loading ? "Signing in..." : "Login"}
           </button>
 
           <p className="register-link">
