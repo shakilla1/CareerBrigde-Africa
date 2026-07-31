@@ -18,13 +18,9 @@ def create_app(env="development"):
         app,
         resources={
             r"/api/*": {
-                "origins": [
-                    "http://localhost:5173",
-                    os.environ.get("FRONTEND_URL")
-                ]
+            "origins": "*"
             }
         },
-        supports_credentials=True,
     )
 
     migrate.init_app(app, db)
