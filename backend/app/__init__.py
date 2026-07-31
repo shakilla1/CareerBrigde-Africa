@@ -18,9 +18,14 @@ def create_app(env="development"):
         app,
         resources={
             r"/api/*": {
-            "origins": "*"
+                "origins": [
+                "http://localhost:5173",
+                "https://career-brigde-africa-8wtm-five.vercel.app",
+
+              ]
             }
         },
+        supports_credentials=True,
     )
 
     migrate.init_app(app, db)
