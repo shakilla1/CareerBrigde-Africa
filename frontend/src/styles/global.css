@@ -29,3 +29,40 @@ img {
   max-width: 100%;
   display: block;
 }
+
+@media (max-width: 768px) {
+
+  .sidebar,
+  .employer-sidebar,
+  .admin-sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    overflow-x: auto;
+    padding: 12px 16px;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .student-layout,
+  .employer-layout,
+  .admin-layout {
+    flex-direction: column;
+  }
+
+  .student-layout__content,
+  .employer-layout__content,
+  .admin-layout__content {
+    margin-left: 0;
+  }
+
+  .student-layout__main,
+  .employer-layout__main,
+  .admin-layout__main {
+    padding: 16px;
+  }
+
+}
