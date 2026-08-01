@@ -42,7 +42,7 @@ function Footer() {
 
           <h3>Contact</h3>
 
-          <p>cyberhubtech@gmail.com</p>
+          <p>cyberhubtech2@gmail.com</p>
           <p>Kigali, Rwanda</p>
 
         </div>

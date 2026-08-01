@@ -24,9 +24,9 @@ def normalise_database_url(url):
     url = url.strip()
 
     if url.startswith("postgres://"):
-        url = url.replace("postgres://", "postgresql+psycopg2://", 1)
-    elif url.startswith("postgresql://"):
-        url = url.replace("postgresql://", "postgresql+psycopg2://", 1)
+        url = url.replace("postgres://", "postgresql+psycopg://", 1)
+    elif url.startswith("postgresql://") and "+psycopg" not in url:
+        url = url.replace("postgresql://", "postgresql+psycopg://", 1)
     elif url.startswith("mysql://"):
         url = url.replace("mysql://", "mysql+pymysql://", 1)
 

@@ -23,7 +23,7 @@ function Contact() {
 
           <div className="contact__item">
             <h3>Email</h3>
-            <p>cyberhubtech@gmail.com</p>
+            <p>cyberhubtech2@gmail.com</p>
           </div>
 
           <div className="contact__item">
