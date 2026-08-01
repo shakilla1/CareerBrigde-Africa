@@ -38,7 +38,7 @@ the command line by whoever runs the server.
 ## Built with
 
 **Backend** — Python, Flask, SQLAlchemy, Flask-Migrate, Flask-JWT-Extended,
-Flask-CORS, MySQL (PyMySQL). Passwords are hashed with Werkzeug. Authentication uses
+Flask-CORS, MySQL (PyMySQL) for local development and PostgreSQL (psycopg) for production. Passwords are hashed with Werkzeug. Authentication uses
 JWT access and refresh tokens, with the user's role carried as a claim.
 
 **Frontend** — React 19 with Vite, React Router 7, axios, react-icons. Styling is
@@ -78,7 +78,7 @@ DATABASE_URL=mysql+pymysql://root:yourpassword@localhost/careerbridge_africa
 Load some data to work with, then start the server:
 
 ```bash
-flask --app run.py seed-data
+flask --app run.py
 python run.py
 ```
 
@@ -112,18 +112,6 @@ have to redeploy for it to take effect.
 
 ---
 
-
-| Role | Email |
-|---|---|
-| Administrator | admin@careerbridge.africa |
-| Employer | hr@rwandawomenintech.org |
-| Employer | careers@ictyouthhub.rw |
-| Employer | recruitment@kigaliagritech.rw |
-| Student | jean.niyonzima@student.alu.edu |
-| Student | divine.ingabire@student.alu.edu |
-
----
-
 ## Command line tools
 
 ```bash
@@ -131,7 +119,6 @@ flask --app run.py create-admin        # create an administrator account
 flask --app run.py list-users          # list every account, with role and status
 flask --app run.py reset-password      # set a new password for any account
 flask --app run.py promote-to-admin    # give an existing account admin rights
-flask --app run.py seed-data           # load demo data
 ```
 
 `list-users` cannot display passwords. They are stored as one way hashes, so a
@@ -225,7 +212,7 @@ backend/
                      mentorship, admin
     utils/           validators, current_user
     cli.py           administrator and account management commands
-    seed.py          demo data
+    seed.py
   migrations/        Alembic
   config.py
   run.py
@@ -278,7 +265,7 @@ server, which leaves the app trying to reach a MySQL instance on localhost that 
 not exist. Check `/api/health` first whenever something is wrong, since it
 distinguishes between the two immediately.
 
-On free hosting tiers the service sleeps after a period of inactivity and the first
+On free hosting tiers, the service sleeps after a period of inactivity and the first
 request afterwards takes close to a minute while it wakes up.
 
 ---
