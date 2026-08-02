@@ -270,20 +270,6 @@ request afterwards takes close to a minute while it wakes up.
 
 ---
 
-## Not implemented yet
-
-Being straightforward about the edges of the project:
-
-- Password reset by email. The endpoints exist but return "not implemented", so
-  passwords are reset from the command line.
-- Notification delivery. Notification rows are written when an application is
-  submitted or its status changes, but there is no endpoint to read them, so the
-  bell icon in the top bar is not yet connected.
-- Users cannot submit reports from the interface. Administrators can only act on
-  reports that already exist in the database.
-- The CV upload API works, but there is no upload control on the profile page.
-- Employer logo upload.
-- Notification preferences and account deletion in the settings pages.
 
 ---
 
